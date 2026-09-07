@@ -118,6 +118,31 @@ details.precauciones p{font-size:14px;line-height:1.45;padding:0 8px 8px}
 @keyframes sacudir{20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
 @keyframes latir{50%{transform:scale(1.04)}}
 .toast{background:#3a1418;border:1px solid var(--rojo);border-radius:16px;padding:14px 18px;font-size:19px;font-weight:800;text-align:center;animation:entrar .25s ease both}
+.ronda-meta{display:flex;justify-content:space-between;align-items:center;gap:12px;color:#d6d6db;font-size:14px;font-weight:700}
+.ronda-pasos{display:flex;gap:7px}
+.ronda-pasos i{width:30px;height:5px;border-radius:4px;background:#45454d}
+.ronda-pasos i.actual{background:#fff}.ronda-pasos i.acierto{background:var(--verde)}.ronda-pasos i.error{background:var(--rojo)}
+.orden-taller{padding:18px;border-left:4px solid var(--rojo);border-radius:0 16px 16px 0;background:#202024;display:grid;gap:8px}
+.orden-taller .etiqueta{font-size:14px;font-weight:750;color:#b6b6bf}
+.orden-taller p{font-size:18px;line-height:1.4;color:#fff}
+.catalogo-opciones{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.producto-opcion{display:flex;flex-direction:column;position:relative;border:2px solid #38383f;border-radius:17px;background:#1c1c1f;overflow:hidden;text-align:left;min-width:0;transition:border-color .15s}
+.producto-opcion img{width:100%;height:clamp(108px,17svh,158px);object-fit:contain;background:#e4e5e3}
+.producto-opcion .nombre{padding:11px 12px;font-size:16px;font-weight:800;line-height:1.2}
+.producto-opcion .aplicacion{display:block;margin-top:6px;color:#c7c7cf;font-size:14px;font-weight:500;line-height:1.3}
+.producto-opcion .marca{position:absolute;right:8px;top:8px;width:27px;height:27px;border-radius:50%;background:#101014;color:white;display:grid;place-items:center;font-weight:800;border:1px solid #777}
+.producto-opcion[aria-pressed="true"]{border-color:#fff;box-shadow:0 0 0 1px #fff}
+.producto-opcion[aria-pressed="true"] .marca{background:#fff;color:#171719}
+.producto-opcion.correcta{border-color:var(--verde)}.producto-opcion.correcta .marca{background:var(--verde);color:#072a1b}
+.producto-opcion.incorrecta{border-color:#ff6671}.producto-opcion.incorrecta .marca{background:#ae1020;color:white}
+.producto-opcion:disabled{cursor:default}
+.resolver:disabled{background:#29292e;color:#aaa;box-shadow:none;cursor:default}
+.devolucion{display:grid;gap:8px;border:1px solid #555;border-radius:16px;padding:16px;background:#222227}
+.devolucion.ok{border-color:var(--verde);background:#102c21}.devolucion p{font-size:16px;line-height:1.4}
+.devolucion a,.fuentes a{color:#ededf1;text-decoration:underline;font-size:14px}
+.puntaje{font-size:clamp(66px,19vw,108px);font-weight:900;line-height:1;text-align:center;letter-spacing:-5px}
+.resumen-casos{display:grid;gap:8px;padding:0;list-style:none;margin:0}.resumen-casos li{padding:14px;background:#202024;border-radius:12px;font-size:16px;line-height:1.4}
+.fuentes{color:#b6b6bf;font-size:14px}.fuentes summary{cursor:pointer;padding:14px 0}.fuentes ul{padding-left:20px;line-height:1.7}
 
 /* final */
 .check{width:96px;height:96px;border-radius:50%;background:var(--verde);display:flex;align-items:center;justify-content:center;margin:4px auto 0;box-shadow:0 12px 40px rgba(31,191,117,.35);animation:pop .5s cubic-bezier(.2,1.4,.4,1) both}
@@ -180,8 +205,8 @@ const PRODUCTOS = [
   {
     id: 'espuma', disponible: true,
     nombre: 'Espuma de Limpieza', linea: 'HVAC-R',
-    videoPortada: 'videos/refrioil-aplicaciones-1080p.mp4',
-    posterPortada: 'videos/aplicaciones-poster.jpg',
+    videoPortada: 'videos/refrioil-angulos-v2.mp4',
+    posterPortada: 'videos/angulos-v2-poster.jpg',
     videoAplicacion: 'videos/refrioil-split-ia.mp4',
     posterAplicacion: 'videos/split-ia-poster.jpg',
     fotos: {
@@ -205,6 +230,29 @@ const PRODUCTOS = [
   // ---- Próximos productos: completar y poner disponible:true ----
   { id: 'limpiador-bomba', disponible: false, nombre: 'Limpiador de Bomba', linea: 'HVAC-R', fotos: { frente: {}, dorso: {} }, giro360: [], usos: [], desafio: null },
   { id: 'long',            disponible: false, nombre: 'Long',               linea: 'HVAC-R', fotos: { frente: {}, dorso: {} }, giro360: [], usos: [], desafio: null }
+];
+
+/* Desafío de selección de productos: no sustituye fichas ni diagnóstico técnico.
+   Fotos y funciones verificadas en el catálogo oficial; ver productos/FUENTES.md. */
+const CATALOGO = {
+  espuma: {nombre:'Espuma HVAC-R', img:'producto-web.jpg', uso:'Limpiar serpentinas', fuente:null},
+  clean: {nombre:'Clean Air', img:'productos/clean-air.jpg', uso:'Limpiar filtros de aire', fuente:'https://refrioil.com/clean-air-limpiador-desengrasante/'},
+  detector: {nombre:'Detector de Fugas Exterior', img:'productos/detector-exterior.jpg', uso:'Localizar fugas por burbujas', fuente:'https://refrioil.com/detector-de-fugas-exterior/'},
+  sellador: {nombre:'Sellalong 10', img:'productos/sellalong-10.jpg', uso:'Sellar virolas y pestañas', fuente:'https://refrioil.com/sellador-hvac-r-10/'}
+};
+const CASOS = [
+  {id:'e-aletas',tipo:'elegir',lugar:'Split interior',titulo:'Elegí el producto.',situacion:'Los filtros ya están limpios. Ahora toca retirar suciedad de las aletas del evaporador con espuma en aerosol.',correctas:['espuma'],detalle:'El trabajo es sobre la serpentina, no sobre los filtros. La Espuma HVAC-R está indicada para esa limpieza.'},
+  {id:'e-filtro',tipo:'elegir',lugar:'Mantenimiento de aire acondicionado',titulo:'Leé bien la orden.',situacion:'La serpentina no necesita limpieza. El trabajo de hoy es quitar la suciedad de los filtros de aire.',correctas:['clean'],detalle:'Clean Air es el producto del catálogo destinado a limpiar los filtros. La tarea no es limpiar la serpentina.'},
+  {id:'e-union',tipo:'elegir',lugar:'Control de una unión',titulo:'¿Qué llevás al equipo?',situacion:'Hay que localizar una pérdida por fuera de una unión, buscando una indicación con burbujas. No sellarla.',correctas:['detector'],detalle:'El Detector de Fugas Exterior ayuda a localizar escapes por burbujas. Detectar y sellar son tareas distintas.'},
+  {id:'e-virola',tipo:'elegir',lugar:'Armado de conexiones',titulo:'Elegí con precisión.',situacion:'La orden pide un sellador específico para virolas y pestañas de refrigeración; no un líquido para buscar pérdidas.',correctas:['sellador'],detalle:'Sellalong 10 es el sellador para virolas y pestañas del catálogo. Un detector no cumple esa función.'},
+  {id:'k-split',tipo:'kit',lugar:'Dos tareas independientes',titulo:'Armá el kit.',situacion:'Limpiar los filtros del split y retirar suciedad de la serpentina con espuma en aerosol.',correctas:['clean','espuma'],detalle:'Clean Air corresponde a los filtros; la Espuma HVAC-R, a la serpentina. Son tareas separadas: no mezcles los productos.'},
+  {id:'k-union',tipo:'kit',lugar:'Banco de trabajo',titulo:'Elegí los dos productos.',situacion:'Sellar virolas y pestañas en un montaje; en otra tarea, localizar pérdidas exteriores por burbujas.',correctas:['sellador','detector'],detalle:'Sellalong 10 se destina al sellado; el Detector Exterior, a localizar fugas. Cada uno tiene un propósito distinto.'},
+  {id:'k-mantenimiento',tipo:'kit',lugar:'Visita técnica',titulo:'¿Qué kit preparás?',situacion:'Limpiar la serpentina con un aerosol espumante y, en otra intervención, localizar una fuga exterior por burbujas.',correctas:['espuma','detector'],detalle:'La Espuma HVAC-R corresponde a la limpieza. El Detector Exterior corresponde a la búsqueda de fugas; no son intercambiables.'},
+  {id:'k-repuestos',tipo:'kit',lugar:'Preparación de materiales',titulo:'Dos órdenes. Dos productos.',situacion:'Limpiar filtros de aire; en un montaje separado, sellar virolas y pestañas de refrigeración.',correctas:['clean','sellador'],detalle:'Clean Air corresponde a la limpieza de filtros; Sellalong 10, al sellado de virolas y pestañas.'},
+  {id:'x-espuma',tipo:'error',lugar:'Revisión del trabajo',titulo:'Detectá el uso equivocado.',situacion:'Una de estas asignaciones confunde la función del producto. ¿Cuál corregirías?',correctas:['espuma'],asignaciones:{espuma:'Sellar una virola',clean:'Limpiar filtros de aire',detector:'Localizar fugas por burbujas',sellador:'Sellar virolas y pestañas'},detalle:'La Espuma HVAC-R es un limpiador, no un sellador. Para virolas y pestañas, el producto del catálogo es Sellalong 10.'},
+  {id:'x-clean',tipo:'error',lugar:'Control de materiales',titulo:'Encontrá la asignación incorrecta.',situacion:'Revisá lo que preparó el equipo. Hay un producto asignado a una tarea que no le corresponde.',correctas:['clean'],asignaciones:{espuma:'Limpiar una serpentina',clean:'Localizar fugas por burbujas',detector:'Localizar fugas por burbujas',sellador:'Sellar virolas y pestañas'},detalle:'Clean Air se destina a limpiar filtros. La búsqueda de pérdidas exteriores por burbujas corresponde al Detector Exterior.'},
+  {id:'x-detector',tipo:'error',lugar:'Revisión de la orden',titulo:'¿Dónde está la confusión?',situacion:'Tres combinaciones respetan la función del catálogo. Una confunde detectar con reparar.',correctas:['detector'],asignaciones:{espuma:'Limpiar una serpentina',clean:'Limpiar filtros de aire',detector:'Sellar una virola',sellador:'Sellar virolas y pestañas'},detalle:'El Detector Exterior localiza la fuga; no es el sellador. Sellalong 10 corresponde al sellado de virolas y pestañas.'},
+  {id:'x-sellador',tipo:'error',lugar:'Último control',titulo:'Marcá el producto mal asignado.',situacion:'Antes de preparar los materiales, encontrá la combinación que no coincide con su función.',correctas:['sellador'],asignaciones:{espuma:'Limpiar una serpentina',clean:'Limpiar filtros de aire',detector:'Localizar fugas por burbujas',sellador:'Limpiar filtros de aire'},detalle:'Sellalong 10 es un sellador, no un limpiador de filtros. Para estos filtros, corresponde Clean Air.'}
 ];
 
 /* =====================================================================
@@ -239,8 +287,20 @@ function linksContacto(p) {
 
 /* ===================== Estado ===================== */
 const app = document.getElementById('app'), btnHome = document.getElementById('btnHome');
-const ORDEN = ['inicio', 'producto', 'fotos', 'aprender', 'uso', 'simulacion', 'desafio', 'final'];
+const ORDEN = ['inicio', 'producto', 'fotos', 'aprender', 'uso', 'simulacion', 'desafio', 'resultado', 'final'];
 let desafioCompletado = false;
+let partida = null;
+let ultimosCasos = [];
+try { ultimosCasos = JSON.parse(sessionStorage.getItem('refrioil-casos-v2') || '[]'); if(!Array.isArray(ultimosCasos)) ultimosCasos=[]; } catch (_) {}
+function nuevaPartida() {
+  const casos = ['elegir','kit','error'].map(tipo => {
+    const banco=CASOS.filter(c=>c.tipo===tipo), nuevos=banco.filter(c=>!ultimosCasos.includes(c.id));
+    return mezclar(nuevos.length ? nuevos : banco)[0];
+  });
+  ultimosCasos=casos.map(c=>c.id);
+  try { sessionStorage.setItem('refrioil-casos-v2',JSON.stringify(ultimosCasos)); } catch (_) {}
+  partida={casos,indice:0,respuestas:[]}; desafioCompletado=false;
+}
 let transicion = null;
 let limpiarEscena = () => {};
 let producto = elegirProducto();
@@ -253,11 +313,14 @@ function elegirProducto() {
 function ir(nombre) {
   if (nombre === 'simulacion') nombre = 'aprender';
   if (nombre === 'final' && !desafioCompletado) nombre = 'desafio';
+  if (nombre === 'resultado' && (!partida || partida.respuestas.length !== 3)) nombre = 'desafio';
+  if (nombre === 'desafio' && (!partida || partida.indice >= 3)) nuevaPartida();
+  if (nombre === 'inicio') { partida=null; desafioCompletado=false; }
   limpiarEscena(); limpiarEscena = () => {};
   clearTimeout(transicion); transicion = null;
   app.innerHTML = '';
   const s = document.createElement('section'); s.className = 'screen'; s.dataset.pantalla = nombre;
-  const paso = {producto:'1 · Conocé',aprender:'2 · Descubrí',uso:'Demo conceptual',desafio:'3 · Elegí'}[nombre];
+  const paso = {producto:'1 · Conocé',aprender:'2 · Descubrí',uso:'Demo conceptual',desafio:'3 · Desafío'}[nombre];
   if (paso) s.appendChild(el(`<p class="paso">${paso}</p>`));
   app.appendChild(s); PANTALLAS[nombre](s);
   btnHome.hidden = nombre === 'inicio';
@@ -287,7 +350,7 @@ const PANTALLAS = {
       el('<div class="expo"><span>Expo Frío Calor 2026<br>Costa Salguero · Buenos Aires</span><strong>Stand 145A</strong></div>'),
       el(`<div class="foto hero"><img src="${p.fotos.frente.src}" alt="${esc(p.fotos.frente.alt)}"></div>`),
       el(`<h1>Conocé la espuma.<br><em>Probá el desafío.</em></h1>`),
-      el('<p>Respondé y participá por obsequios en el sorteo del stand.</p>')
+      el('<p>Tres casos de taller. Resolvelos y acercate al stand para participar del sorteo por obsequios.</p>')
     );
     if (lista.length > 1) {
       const sel = el('<div class="productos"></div>');
@@ -447,38 +510,72 @@ const PANTALLAS = {
   },
 
   desafio(s) {
-    desafioCompletado = false;
-    const p = producto, d = p.desafio;
-    let intentos = 0, resuelto = false;
+    const ronda=partida, d=ronda.casos[ronda.indice], cantidad=d.correctas.length;
+    const seleccion=new Set(); let resuelto=false;
+    s.dataset.caso=d.id;
+    const nombreModo={elegir:'Elegí',kit:'Armá el kit',error:'Detectá el error'};
     s.append(
-      el(`<div class="foto serp"><img src="${d.imagen.src}" alt="${esc(d.imagen.alt)}"><span class="chip">Ilustración</span></div>`),
-      el(`<h2>${d.pregunta}</h2>`)
+      el(`<div class="ronda-meta"><span>Caso ${ronda.indice+1} de 3 · ${nombreModo[d.tipo]}</span><span class="ronda-pasos" aria-hidden="true">${[0,1,2].map(i=>`<i class="${i===ronda.indice?'actual':ronda.respuestas[i] ? ronda.respuestas[i].acierto?'acierto':'error':''}"></i>`).join('')}</span></div>`),
+      el(`<h2>${esc(d.titulo)}</h2>`),
+      el(`<div class="orden-taller"><span class="etiqueta">${esc(d.lugar)}</span><p>${esc(d.situacion)}</p></div>`),
+      el(`<p class="muted" id="instruccion-ronda">${cantidad===2?'Elegí 2 productos. Se usan por separado.':'Elegí 1 opción.'} Tenés un intento por caso.</p>`)
     );
-    const lista = el('<div class="opciones"></div>'), fb = el('<div></div>');
-    mezclar(d.opciones).forEach(o => {
-      const b = el(`<button class="opcion" type="button"><div class="img"><img src="${o.img}" alt=""></div><b>${esc(o.texto)}${o.foto ? '' : '<small>Ilustración</small>'}</b><span class="mark" aria-hidden="true"></span></button>`);
-      b.onclick = () => {
-        if (resuelto) return;
-        if (o.correcta) {
-          resuelto = true; desafioCompletado = true; b.classList.add('ok'); b.querySelector('.mark').textContent = '✓';
-          lista.querySelectorAll('.opcion').forEach(x => { x.disabled = true; x.classList.remove('bad'); });
-          fb.innerHTML = ''; vibrar(60); confeti();
-          transicion = setTimeout(() => ir('final'), 900);
-        } else {
-          b.classList.remove('bad'); void b.offsetWidth; b.classList.add('bad'); b.querySelector('.mark').textContent = '✕';
-          fb.innerHTML = ''; fb.append(el(`<div class="toast" role="status">${esc(d.incorrecto[intentos++ % d.incorrecto.length])}</div>`)); vibrar([30, 40, 30]);
-        }
+    const lista=el('<div class="catalogo-opciones" role="group" aria-labelledby="instruccion-ronda"></div>');
+    const confirmar=el(`<button class="btn btn-red resolver" type="button" disabled>${cantidad===2?'Elegí 2 productos':'Elegí una opción'}</button>`);
+    const fb=el('<div></div>');
+    mezclar(Object.keys(CATALOGO)).forEach(id=>{
+      const p=CATALOGO[id];
+      const b=el(`<button class="producto-opcion" type="button" data-producto="${id}" aria-pressed="false"><img src="${p.img}" alt="" width="158" height="158"><span class="marca" aria-hidden="true"></span><span class="nombre">${esc(p.nombre)}${d.asignaciones?`<span class="aplicacion">${esc(d.asignaciones[id])}</span>`:''}</span></button>`);
+      b.onclick=()=>{
+        if(resuelto) return;
+        if(seleccion.has(id)) seleccion.delete(id);
+        else { if(cantidad===1) seleccion.clear(); if(seleccion.size<cantidad) seleccion.add(id); }
+        lista.querySelectorAll('button').forEach(x=>{const on=seleccion.has(x.dataset.producto);x.setAttribute('aria-pressed',String(on));x.querySelector('.marca').textContent=on?'✓':'';});
+        confirmar.disabled=seleccion.size!==cantidad;
+        confirmar.textContent=seleccion.size===cantidad?'Confirmar respuesta':cantidad===2?`Elegí ${cantidad-seleccion.size} producto${cantidad-seleccion.size===1?'':'s'}`:'Elegí una opción';
       };
       lista.appendChild(b);
     });
-    s.append(lista, fb);
+    confirmar.onclick=()=>{
+      if(resuelto || seleccion.size!==cantidad || partida!==ronda) return;
+      resuelto=true;
+      const acierto=d.correctas.every(id=>seleccion.has(id));
+      ronda.respuestas.push({id:d.id,acierto,seleccion:[...seleccion]});
+      lista.querySelectorAll('button').forEach(b=>{
+        b.disabled=true;
+        const id=b.dataset.producto;
+        if(d.correctas.includes(id)){b.classList.add('correcta');b.querySelector('.marca').textContent='✓';}
+        else if(seleccion.has(id)){b.classList.add('incorrecta');b.querySelector('.marca').textContent='✕';}
+      });
+      confirmar.hidden=true; vibrar(acierto?60:[30,40,30]);
+      fb.append(el(`<div class="devolucion ${acierto?'ok':''}" role="status" tabindex="-1"><strong>${acierto?'Bien resuelto.':'Esta vez no.'}</strong><p>${esc(d.detalle)}</p><p>Respuesta: ${d.correctas.map(id=>esc(CATALOGO[id].nombre)).join(' + ')}.</p></div>`));
+      const siguiente=el(`<button class="btn btn-red" type="button">${ronda.indice===2?'Ver resultado':'Siguiente caso'}</button>`);
+      siguiente.onclick=()=>{
+        if(partida!==ronda) return;
+        ronda.indice++;
+        if(ronda.indice<3) ir('desafio');
+        else {desafioCompletado=ronda.respuestas.every(r=>r.acierto);if(desafioCompletado){confeti();ir('final');}else ir('resultado');}
+      };
+      s.append(siguiente);fb.querySelector('.devolucion').focus({preventScroll:true});
+      fb.scrollIntoView?.({block:'nearest',behavior:reducirMovimiento()?'instant':'smooth'});
+    };
+    s.append(lista,confirmar,fb,el('<p class="muted">3 aciertos para completar el desafío. Sin reloj.</p>'));
+  },
+
+  resultado(s) {
+    const aciertos=partida.respuestas.filter(r=>r.acierto).length;
+    s.append(el(`<p class="puntaje">${aciertos}<span style="color:#8c8c96">/3</span></p>`),el('<h2 class="center">Probá con <em>otros casos.</em></h2>'),el('<p class="center">Necesitás resolver los tres. En la próxima partida cambian los casos.</p>'));
+    const resumen=el('<ul class="resumen-casos"></ul>');
+    partida.casos.forEach((c,i)=>resumen.append(el(`<li>${partida.respuestas[i].acierto?'✓':'✕'} <strong>${esc(c.lugar)}</strong><br>${c.correctas.map(id=>esc(CATALOGO[id].nombre)).join(' + ')}</li>`)));
+    const otra=el('<button class="btn btn-red" type="button">Probar otros casos</button>');otra.onclick=()=>{nuevaPartida();ir('desafio');};
+    s.append(resumen,otra,fuentesDesafio());
   },
 
   final(s) {
-    const p = producto, d = p.desafio;
+    const p = producto;
     s.append(
       el(`<div class="check"><svg viewBox="0 0 24 24"><path d="M4 12.5l5 5L20 6.5"/></svg></div>`),
-      el(`<h2 class="center">${esc(d.correcto)}</h2>`),
+      el('<h2 class="center">3 de 3.<br><em>¡Desafío resuelto!</em></h2>'),
       el('<div class="participacion"><p>Ahora acercate al</p><strong>STAND 145A</strong><p>Mostrale esta pantalla al equipo para registrar tu participación en el sorteo presencial por obsequios.</p><p class="muted">Responder bien no garantiza un premio. Esta web no registra participantes ni realiza el sorteo. Consultá al equipo la dinámica y el horario.</p></div>'),
       el(`<div class="foto final-foto"><img src="${p.fotos.frente.src}" alt="${esc(p.fotos.frente.alt)}"></div>`),
       el(`<div class="tags">${p.usos.map(u => `<span class="tag">${esc(u)}</span>`).join('')}</div>`),
@@ -493,10 +590,14 @@ const PANTALLAS = {
     const redes = linksContacto(p);
     if (redes.length) cont.appendChild(el(`<div class="redes">${redes.map(r => `<a href="${r.h}" target="_blank" rel="noopener">${r.i}<span>${r.t}</span></a>`).join('')}</div>`));
     const again = el(`<button class="btn btn-ghost" type="button">Jugar de nuevo</button>`);
-    again.onclick = () => { pararConfeti(); ir('desafio'); };
-    s.append(cont, el('<div class="spacer"></div>'), again);
+    again.onclick = () => { pararConfeti(); nuevaPartida(); ir('desafio'); };
+    s.append(cont,fuentesDesafio(), el('<div class="spacer"></div>'), again);
   }
 };
+
+function fuentesDesafio(){
+  return el(`<details class="fuentes"><summary>Productos y fichas oficiales</summary><p>Selección de productos, no instrucciones de aplicación. Consultá etiqueta, ficha y compatibilidad del equipo.</p><ul>${Object.values(CATALOGO).filter(p=>p.fuente).map(p=>`<li><a href="${p.fuente}" target="_blank" rel="noopener">${esc(p.nombre)}</a></li>`).join('')}</ul><p>Espuma HVAC-R: etiqueta del envase proporcionada por Refrioil.</p></details>`);
+}
 
 /* ===================== Confeti ===================== */
 const cv = document.getElementById('confeti'), ctx = cv.getContext('2d');
@@ -518,7 +619,7 @@ function pararConfeti() { cancelAnimationFrame(raf); if (ctx) ctx.clearRect(0, 0
 /* Arranque (?pantalla=producto lo usa experiencia.html) */
 const inicial = new URLSearchParams(location.search).get('pantalla');
 ir(ORDEN.includes(inicial) ? inicial : 'inicio');
-[producto.fotos.dorso.src, producto.desafio.imagen.src, ...producto.desafio.opciones.map(o => o.img)].forEach(src => { new Image().src = src; });
+[producto.fotos.dorso.src, ...Object.values(CATALOGO).map(p=>p.img)].forEach(src => { new Image().src = src; });
 </script>
 </body>
 </html>
