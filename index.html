@@ -77,6 +77,10 @@ details.precauciones p{font-size:14px;line-height:1.45;padding:0 8px 8px}
 .participacion strong{font-size:32px;color:#fff}
 .participacion p{line-height:1.45}
 .screen[data-pantalla="inicio"] .hero{height:clamp(210px,35svh,350px)}
+.hero.con-video{height:auto!important;aspect-ratio:16/9;background:#171719}
+.hero.con-video video{display:block;width:100%;height:100%;object-fit:contain}
+.hero .video-control{position:absolute;right:10px;bottom:10px;min-height:44px;padding:8px 14px;border-radius:12px;background:#111e;color:#fff;font-size:14px;font-weight:700}
+.hero .video-nota{position:absolute;top:10px;left:10px;padding:6px 9px;background:#111e;border-radius:8px;font-size:12px;color:#fff}
 
 /* visor frente / dorso / 360 */
 .viewer{height:clamp(280px,54svh,560px);touch-action:pan-y;cursor:grab;user-select:none;-webkit-user-select:none;perspective:1600px;background:var(--negro);overflow:visible}
@@ -159,9 +163,8 @@ footer{padding:10px 18px calc(12px + env(safe-area-inset-bottom));color:#5f5f66;
 <main id="app" aria-live="polite"></main>
 <canvas id="confeti" hidden></canvas>
 
-<footer>Imágenes del envase · Modelos y simulaciones ilustrativos</footer>
+<footer>Refrioil · Espuma de Limpieza HVAC-R</footer>
 
-<script src="escenas-3d.js"></script>
 <script>
 /* =====================================================================
    PRODUCTOS — para sumar uno: copiar el bloque "espuma", completar y
@@ -177,6 +180,10 @@ const PRODUCTOS = [
   {
     id: 'espuma', disponible: true,
     nombre: 'Espuma de Limpieza', linea: 'HVAC-R',
+    videoPortada: 'videos/refrioil-aplicaciones-1080p.mp4',
+    posterPortada: 'videos/aplicaciones-poster.jpg',
+    videoAplicacion: 'videos/refrioil-split-ia.mp4',
+    posterAplicacion: 'videos/split-ia-poster.jpg',
     fotos: {
       frente: { src: 'producto-web.jpg', alt: 'Frente del envase de Espuma de Limpieza HVAC-R Refrioil' },
       dorso:  { src: 'dorso-web.jpg',    alt: 'Dorso del envase de Espuma de Limpieza HVAC-R Refrioil', fondo: 'blanco' }
@@ -244,6 +251,7 @@ function elegirProducto() {
   return lista.find(p => p.id === id) || lista[0];
 }
 function ir(nombre) {
+  if (nombre === 'simulacion') nombre = 'aprender';
   if (nombre === 'final' && !desafioCompletado) nombre = 'desafio';
   limpiarEscena(); limpiarEscena = () => {};
   clearTimeout(transicion); transicion = null;
@@ -286,6 +294,22 @@ const PANTALLAS = {
       lista.forEach(x => { const b = el(`<button type="button" aria-current="${x === p}">${esc(x.nombre)}</button>`); b.onclick = () => { producto = x; ir('inicio'); }; sel.appendChild(b); });
       s.appendChild(sel);
     }
+    if (p.videoPortada) {
+      const hero = s.querySelector('.hero'), foto = hero.querySelector('img');
+      const video = el('<video muted playsinline loop preload="metadata" hidden aria-label="Presentación de aplicaciones de Espuma Refrioil creada con imágenes IA"></video>');
+      video.src=p.videoPortada; video.poster=p.posterPortada; video.muted=true;
+      const control=el('<button class="video-control" type="button">Reproducir video</button>');
+      const nota=el('<span class="video-nota">Demostración conceptual · IA</span>');
+      const restaurar=()=>{video.pause();video.remove();control.remove();nota.remove();foto.hidden=false;hero.classList.remove('con-video');};
+      video.addEventListener('loadeddata',()=>{foto.hidden=true;video.hidden=false;hero.classList.add('con-video');});
+      video.addEventListener('error',restaurar);
+      video.addEventListener('play',()=>{control.textContent='Pausar video';});
+      video.addEventListener('pause',()=>{control.textContent='Reproducir video';});
+      control.onclick=()=>{if(video.paused)video.play().catch(()=>{control.textContent='Reproducir video';});else video.pause();};
+      hero.append(video,nota,control);
+      if (!reducirMovimiento()) video.play().catch(()=>{control.textContent='Reproducir video';});
+      limpiarEscena=()=>{video.pause();video.removeAttribute('src');video.load();};
+    }
     const b = el(`<button class="btn btn-red" type="button">Jugar</button>`);
     b.onclick = () => ir('producto');
     const videos=el('<button class="btn btn-ghost" type="button">¿Para qué sirve?</button>');videos.onclick=()=>ir('aprender');
@@ -293,22 +317,18 @@ const PANTALLAS = {
   },
 
   producto(s) {
-    s.append(el('<h2>Giralo. <em>Descubrilo.</em></h2>'));
-    const host = el('<div class="stage3d" role="img" aria-label="Modelo 3D ilustrativo del envase. Usá el dedo o los botones para girarlo."></div>');
-    const controls = el('<div class="controls3d"><button type="button" aria-label="Girar hacia la izquierda">↶</button><button type="button">Vista inicial</button><button type="button" aria-label="Girar hacia la derecha">↷</button></div>');
-    const fotos = el('<button type="button" class="video-btn">Ver imágenes del envase</button>'); fotos.onclick=()=>ir('fotos');
+    s.append(el('<h2>Espuma de limpieza <em>HVAC-R.</em></h2>'));
+    const foto=el(`<div class="foto hero"><img src="${producto.fotos.frente.src}" alt="${esc(producto.fotos.frente.alt)}"></div>`);
+    let dorso=false;
+    const ver=el('<button type="button" class="btn btn-ghost" aria-pressed="false">Ver dorso</button>');
+    ver.onclick=()=>{dorso=!dorso;const ref=producto.fotos[dorso?'dorso':'frente'];foto.querySelector('img').src=ref.src;foto.querySelector('img').alt=ref.alt;ver.textContent=dorso?'Ver frente':'Ver dorso';ver.setAttribute('aria-pressed',String(dorso));};
     const next = el('<button type="button" class="btn btn-red">Descubrir para qué sirve</button>'); next.onclick=()=>ir('aprender');
-    s.append(host,controls,el('<p class="muted">Arrastrá para girar · Modelo ilustrativo, etiqueta simplificada</p>'),fotos,next);
-    host.addEventListener('sceneerror',e=>error3d(host,e.detail));
-    try {
-      if (!window.Refrioil3D) throw new Error('No se cargó el visor 3D. Podés ver las imágenes del envase y seguir con el desafío.');
-      const v=window.Refrioil3D.viewer(host), buttons=controls.querySelectorAll('button');
-      buttons[0].onclick=()=>v.turn(-Math.PI/4);buttons[1].onclick=()=>v.reset();buttons[2].onclick=()=>v.turn(Math.PI/4);
-      limpiarEscena=()=>v.dispose();
-    } catch(e) { error3d(host,e);controls.hidden=true; }
+    s.append(foto,next,ver);
   },
 
-  fotos(s) {
+  fotos(s) { PANTALLAS.producto(s); },
+
+  fotosArchivadas(s) {
     const p = producto, vistas = [p.fotos.frente, p.fotos.dorso], hay360 = p.giro360.length > 0;
     let vista = 0, frame = 0, angulo = 0;   // angulo: giro 3D acumulado (0 = frente, 180 = dorso)
     s.append(el(`<h2>Mirala <em>de cerca</em></h2>`));
@@ -354,16 +374,27 @@ const PANTALLAS = {
   },
 
   aprender(s) {
+    if(producto.videoAplicacion){PANTALLAS.uso(s);return;}
     s.append(el('<h2>Espuma para limpiar <em>serpentinas.</em></h2>'),
       el(`<div class="explicacion"><div class="foto"><img src="${producto.fotos.frente.src}" alt="${esc(producto.nombre)}"></div><div class="foto"><img src="serpentina-web.jpg" alt="Serpentina de intercambio térmico"><span class="chip">Ilustración</span></div></div>`),
       el('<p>Un limpiador para el mantenimiento de equipos HVAC-R.</p>'),
       el('<p class="muted">Uso industrial. Consultá las instrucciones y precauciones del envase antes de aplicarlo.</p>'));
     const jugar = el('<button class="btn btn-red" type="button">Probar el desafío</button>'); jugar.onclick=()=>ir('desafio');
-    const demo = el('<button class="btn btn-ghost" type="button">Ver animación conceptual</button>'); demo.onclick=()=>ir('uso');
-    s.append(jugar,demo);
+    s.append(jugar);
+    if(producto.videoAplicacion){const demo=el('<button class="btn btn-ghost" type="button">Ver video</button>');demo.onclick=()=>ir('uso');s.append(demo);}
   },
 
   uso(s) {
+    if(!producto.videoAplicacion){PANTALLAS.aprender(s);return;}
+    s.append(el('<h2>La espuma <em>en acción.</em></h2>'));
+    const video=el('<video class="demo-video" controls playsinline preload="metadata" aria-label="Video de aplicación conceptual de Espuma Refrioil" style="aspect-ratio:16/9"></video>');video.src=producto.videoAplicacion;video.poster=producto.posterAplicacion;
+    const estado=el('<p class="muted" role="status">Demostración visual creada con IA.</p>');
+    video.addEventListener('error',()=>{video.hidden=true;estado.textContent='El video no se pudo cargar. Podés seguir con el desafío.';});
+    const jugar=el('<button class="btn btn-red" type="button">Probar el desafío</button>');jugar.onclick=()=>ir('desafio');
+    s.append(video,estado,jugar);limpiarEscena=()=>{video.pause();video.removeAttribute('src');video.load();};
+  },
+
+  usoArchivado(s) {
     s.append(el('<h2>Explorá la <em>animación conceptual.</em></h2>'));
     const picker=el('<div class="scene-pick" role="group" aria-label="Elegir video"><button type="button" data-scene="interior" aria-pressed="true">Serpentina interior</button><button type="button" data-scene="condensador" aria-pressed="false">Condensador</button><button type="button" data-scene="radiador" aria-pressed="false">Radiador</button></div>');
     const video=el('<video class="demo-video" controls playsinline preload="metadata" poster="videos/interior-preview.jpg" src="videos/refrioil-interior.mp4" aria-label="Video ilustrativo: espuma sobre una serpentina interior"></video>');
@@ -382,7 +413,7 @@ const PANTALLAS = {
     limpiarEscena=()=>{video.pause();video.removeAttribute('src');video.load();};
   },
 
-  simulacion(s) {
+  simulacionArchivada(s) {
     s.append(el('<h2>Mirá la espuma <em>en acción</em></h2>'));
     const picker=el('<div class="scene-pick" role="group" aria-label="Escenario ilustrativo"><button type="button" data-scene="interior" aria-pressed="true">Serpentina interior</button><button type="button" data-scene="condensador" aria-pressed="false">Condensador</button><button type="button" data-scene="radiador" aria-pressed="false">Radiador</button></div>');
     const host=el('<div class="stage3d sim" role="img" aria-label="Simulación 3D de espuma sobre una superficie de intercambio térmico"></div>');
