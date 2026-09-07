@@ -16,7 +16,9 @@ Descomprimir el respaldo y abrir index.html. El desafío, las fotos y los videos
 ## Pendiente importante
 La portada usa `videos/refrioil-angulos-v2.mp4`: montaje de fotografías de 12 s, 1080p, 24 fps, tres ángulos (split frontal, detalle de aletas, condensadora lateral). Dos imágenes nuevas con generación integrada, una por escena, sin variantes; se reutilizó la imagen lateral existente. Prompts y referencias en `escenas/PROMPTS.md`. No presentar el montaje como una filmación del producto.
 
-La explicación conserva el video de Flow original de 8 s/720p. El 7/9 se autorizó y ejecutó UNA edición con Gemini Omni Flash (tarifa oficial: 40 créditos), sin compras ni variantes. Se descargó el resultado, se decodificaron sus 192 cuadros y se compararon principio, medio y final: no hay aumento claro de espuma, por lo que NO se publicó como mejora. Queda guardado fuera de la web en `work/video-omni-no-aprobado.mp4`. No volver a generar sin autorización. Aumentar la espuma del clip sigue pendiente.
+La explicación usa `videos/refrioil-split-espuma-blanca-v3.mp4`: nuevo video desde la imagen frontal con espuma blanca. UNA generación Omni 1.1 Flash autorizada por hasta 12 créditos existentes, costo mostrado 12, 8 s/720p/24 fps/x1. No se auditó diferencia de saldo. El montaje final dura 6 s y no tiene audio: se retiraron los dos segundos finales donde la espuma se deformaba. Archivo completo decodificado (144 cuadros); referencias visuales revisadas. Es una representación conceptual IA, no una demostración física validada; conserva pequeñas imperfecciones de textura/etiqueta, sin iteraciones adicionales.
+
+El clip anterior y su póster se conservan para recuperación, pero ya no se muestran en la explicación. Una edición anterior autorizada por 40 créditos no había mejorado la espuma y sigue fuera de la web; no confundirla con este nuevo resultado. Cualquier generación futura requiere nueva autorización.
 
 Las fotos de envase suministradas muestran una tapa roja; el producto definitivo lleva tapa negra según el usuario. Falta una imagen final corregida para sustituirlas, sin modificar la marca.
 
