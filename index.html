@@ -5,13 +5,14 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0e0e0f">
 <title>Refrioil · Espuma de Limpieza HVAC-R</title>
+<meta name="description" content="Conocé la Espuma de Limpieza HVAC-R Refrioil, resolvé el desafío y acercate al stand 145A de Expo Frío Calor 2026 para participar del sorteo presencial.">
 <style>
 :root{--negro:#0e0e0f;--gris-oscuro:#1c1c1f;--gris:#2c2c31;--gris-claro:#9a9aa1;--rojo:#e30613;--rojo-oscuro:#b8000f;--verde:#1fbf75;--foto:#d4d4d6}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html{color-scheme:dark;overflow-x:hidden}
 body{margin:0;background:var(--negro);color:#fff;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.25;min-height:100svh;display:flex;flex-direction:column;overscroll-behavior-y:none}
 button{font:inherit;color:inherit;cursor:pointer;border:0;background:none;padding:0;touch-action:manipulation;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
-button:focus-visible{outline:3px solid #ffbe47;outline-offset:4px}
+button:focus-visible,a:focus-visible{outline:3px solid #ffbe47;outline-offset:4px}
 img{display:block;max-width:100%;user-select:none;-webkit-user-drag:none;pointer-events:none}
 [hidden]{display:none!important}
 
@@ -33,6 +34,30 @@ p{margin:0;font-size:17px;color:#d6d6db}
 .muted{color:var(--gris-claro);font-size:14px;text-align:center}
 .center{text-align:center}
 .spacer{flex:1}
+.paso{color:var(--gris-claro);font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+.explicacion{display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:10px}
+.explicacion .foto{height:clamp(170px,30svh,260px)}
+.stage3d{position:relative;height:clamp(290px,48svh,470px);border:1px solid #333944;border-radius:22px;background:radial-gradient(ellipse at 50% 38%,#303846,#101216 72%);overflow:hidden;touch-action:pan-y;cursor:grab}
+.stage3d canvas{display:block;width:100%;height:100%}
+.stage3d:active{cursor:grabbing}
+.stage3d.sim{height:clamp(280px,42svh,420px);cursor:default}
+.stage3d .error3d{position:absolute;inset:0;display:flex;align-items:center;padding:28px;background:#15181eee;text-align:center}
+.controls3d{display:grid;grid-template-columns:1fr 2fr 1fr;gap:8px}
+.controls3d button,.scene-pick button,.video-btn{background:var(--gris-oscuro);border:1px solid #414550;border-radius:12px;min-height:48px;font-size:16px;font-weight:700;padding:10px}
+.scene-pick{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.scene-pick button{font-size:14px;overflow-wrap:anywhere}
+.scene-pick button[aria-pressed="true"]{background:#fff;color:#15171a;border-color:#fff}
+.scene-status{font-size:17px;font-weight:750;text-align:center;min-height:22px}
+.scrub{width:100%;min-height:44px;accent-color:var(--rojo);margin:0;touch-action:pan-y}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.demo-actions{display:grid;grid-template-columns:2fr 1fr;gap:8px}
+.demo-actions .btn{min-height:52px;font-size:17px;padding:10px}
+.video-btn:disabled{opacity:.5;cursor:wait}
+.download-video{color:#fff;text-align:center;font-weight:700;padding:15px;border:1px solid var(--verde);border-radius:12px}
+.demo-video{display:block;width:100%;aspect-ratio:1;background:#11151b;border-radius:18px;border:1px solid #333944;object-fit:contain}
+details.precauciones{font-size:14px;color:var(--gris-claro)}
+details.precauciones summary{cursor:pointer;min-height:44px;display:flex;align-items:center;justify-content:center}
+details.precauciones p{font-size:14px;line-height:1.45;padding:0 8px 8px}
 
 /* botones */
 .btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;min-height:62px;padding:14px 20px;border-radius:16px;font-size:20px;font-weight:800;transition:transform .1s}
@@ -46,6 +71,12 @@ p{margin:0;font-size:17px;color:#d6d6db}
 .foto img{width:100%;height:100%;object-fit:contain}
 .chip{position:absolute;top:12px;left:12px;background:rgba(255,255,255,.92);color:#333;font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;padding:7px 11px;border-radius:30px}
 .hero{height:clamp(260px,52svh,520px)}
+.expo{display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:14px;color:#d6d6db;line-height:1.4}
+.expo strong{background:var(--rojo);padding:8px 12px;border-radius:10px;color:white;white-space:nowrap}
+.participacion{padding:22px;border:1px solid #e30613;border-radius:20px;background:#251215;display:flex;flex-direction:column;gap:12px;text-align:center}
+.participacion strong{font-size:32px;color:#fff}
+.participacion p{line-height:1.45}
+.screen[data-pantalla="inicio"] .hero{height:clamp(210px,35svh,350px)}
 
 /* visor frente / dorso / 360 */
 .viewer{height:clamp(280px,54svh,560px);touch-action:pan-y;cursor:grab;user-select:none;-webkit-user-select:none;perspective:1600px;background:var(--negro);overflow:visible}
@@ -70,7 +101,7 @@ p{margin:0;font-size:17px;color:#d6d6db}
 .opcion{position:relative;display:flex;align-items:center;gap:14px;width:100%;min-height:92px;padding:8px 14px 8px 8px;background:var(--gris-oscuro);border:2px solid var(--gris);border-radius:18px;text-align:left;transition:border-color .2s,background .2s,transform .1s}
 .opcion:active{transform:scale(.98)}
 .opcion .img{width:76px;height:76px;border-radius:12px;background:#fff;overflow:hidden;flex:none}
-.opcion .img img{width:100%;height:100%;object-fit:cover}
+.opcion .img img{width:100%;height:100%;object-fit:contain}
 .opcion b{flex:1;font-size:21px;line-height:1.1}
 .opcion small{display:block;color:var(--gris-claro);font-size:11px;letter-spacing:1px;text-transform:uppercase;font-weight:700;margin-top:4px}
 .opcion .mark{width:34px;height:34px;border-radius:50%;flex:none;display:none;align-items:center;justify-content:center;font-weight:900;font-size:20px}
@@ -128,8 +159,9 @@ footer{padding:10px 18px calc(12px + env(safe-area-inset-bottom));color:#5f5f66;
 <main id="app" aria-live="polite"></main>
 <canvas id="confeti" hidden></canvas>
 
-<footer>Fotos reales del envase · Ilustraciones señaladas · Datos de la etiqueta</footer>
+<footer>Imágenes del envase · Modelos y simulaciones ilustrativos</footer>
 
+<script src="escenas-3d.js"></script>
 <script>
 /* =====================================================================
    PRODUCTOS — para sumar uno: copiar el bloque "espuma", completar y
@@ -200,7 +232,10 @@ function linksContacto(p) {
 
 /* ===================== Estado ===================== */
 const app = document.getElementById('app'), btnHome = document.getElementById('btnHome');
-const ORDEN = ['inicio', 'producto', 'desafio', 'final'];
+const ORDEN = ['inicio', 'producto', 'fotos', 'aprender', 'uso', 'simulacion', 'desafio', 'final'];
+let desafioCompletado = false;
+let transicion = null;
+let limpiarEscena = () => {};
 let producto = elegirProducto();
 
 function elegirProducto() {
@@ -209,18 +244,31 @@ function elegirProducto() {
   return lista.find(p => p.id === id) || lista[0];
 }
 function ir(nombre) {
+  if (nombre === 'final' && !desafioCompletado) nombre = 'desafio';
+  limpiarEscena(); limpiarEscena = () => {};
+  clearTimeout(transicion); transicion = null;
   app.innerHTML = '';
   const s = document.createElement('section'); s.className = 'screen'; s.dataset.pantalla = nombre;
+  const paso = {producto:'1 · Conocé',aprender:'2 · Descubrí',uso:'Demo conceptual',desafio:'3 · Elegí'}[nombre];
+  if (paso) s.appendChild(el(`<p class="paso">${paso}</p>`));
   app.appendChild(s); PANTALLAS[nombre](s);
   btnHome.hidden = nombre === 'inicio';
   window.scrollTo({ top: 0 });
+  const titulo = s.querySelector('h1,h2');
+  if (titulo) { titulo.tabIndex = -1; titulo.focus({preventScroll:true}); }
 }
 btnHome.onclick = document.getElementById('btnLogo').onclick = () => { pararConfeti(); ir('inicio'); };
 
 const el = h => { const t = document.createElement('template'); t.innerHTML = h.trim(); return t.content.firstElementChild; };
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const mezclar = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
-const vibrar = p => { if (navigator.vibrate) navigator.vibrate(p); };
+const reducirMovimiento = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const vibrar = p => { if (!reducirMovimiento() && navigator.vibrate) navigator.vibrate(p); };
+function error3d(host, error) {
+  let mensaje = host.querySelector('.error3d');
+  if (!mensaje) { mensaje = el('<p class="error3d" role="status"></p>'); host.appendChild(mensaje); }
+  mensaje.textContent = error.message || error;
+}
 
 /* ===================== Pantallas ===================== */
 const PANTALLAS = {
@@ -228,8 +276,10 @@ const PANTALLAS = {
   inicio(s) {
     const p = producto, lista = PRODUCTOS.filter(x => x.disponible);
     s.append(
+      el('<div class="expo"><span>Expo Frío Calor 2026<br>Costa Salguero · Buenos Aires</span><strong>Stand 145A</strong></div>'),
       el(`<div class="foto hero"><img src="${p.fotos.frente.src}" alt="${esc(p.fotos.frente.alt)}"></div>`),
-      el(`<h1>¿Sabés para qué sirve <em>esta espuma</em>?</h1>`)
+      el(`<h1>Conocé la espuma.<br><em>Probá el desafío.</em></h1>`),
+      el('<p>Respondé y participá por obsequios en el sorteo del stand.</p>')
     );
     if (lista.length > 1) {
       const sel = el('<div class="productos"></div>');
@@ -238,10 +288,27 @@ const PANTALLAS = {
     }
     const b = el(`<button class="btn btn-red" type="button">Jugar</button>`);
     b.onclick = () => ir('producto');
-    s.append(el('<div class="spacer"></div>'), b);
+    const videos=el('<button class="btn btn-ghost" type="button">¿Para qué sirve?</button>');videos.onclick=()=>ir('aprender');
+    s.append(el('<div class="spacer"></div>'), b, videos);
   },
 
   producto(s) {
+    s.append(el('<h2>Giralo. <em>Descubrilo.</em></h2>'));
+    const host = el('<div class="stage3d" role="img" aria-label="Modelo 3D ilustrativo del envase. Usá el dedo o los botones para girarlo."></div>');
+    const controls = el('<div class="controls3d"><button type="button" aria-label="Girar hacia la izquierda">↶</button><button type="button">Vista inicial</button><button type="button" aria-label="Girar hacia la derecha">↷</button></div>');
+    const fotos = el('<button type="button" class="video-btn">Ver imágenes del envase</button>'); fotos.onclick=()=>ir('fotos');
+    const next = el('<button type="button" class="btn btn-red">Descubrir para qué sirve</button>'); next.onclick=()=>ir('aprender');
+    s.append(host,controls,el('<p class="muted">Arrastrá para girar · Modelo ilustrativo, etiqueta simplificada</p>'),fotos,next);
+    host.addEventListener('sceneerror',e=>error3d(host,e.detail));
+    try {
+      if (!window.Refrioil3D) throw new Error('No se cargó el visor 3D. Podés ver las imágenes del envase y seguir con el desafío.');
+      const v=window.Refrioil3D.viewer(host), buttons=controls.querySelectorAll('button');
+      buttons[0].onclick=()=>v.turn(-Math.PI/4);buttons[1].onclick=()=>v.reset();buttons[2].onclick=()=>v.turn(Math.PI/4);
+      limpiarEscena=()=>v.dispose();
+    } catch(e) { error3d(host,e);controls.hidden=true; }
+  },
+
+  fotos(s) {
     const p = producto, vistas = [p.fotos.frente, p.fotos.dorso], hay360 = p.giro360.length > 0;
     let vista = 0, frame = 0, angulo = 0;   // angulo: giro 3D acumulado (0 = frente, 180 = dorso)
     s.append(el(`<h2>Mirala <em>de cerca</em></h2>`));
@@ -256,7 +323,7 @@ const PANTALLAS = {
     const card = viewer.querySelector('.card3d'), giro = viewer.querySelector('.giro'), dots = viewer.querySelectorAll('.dots i');
     const seg = el(`<div class="segment"><button type="button" aria-pressed="true">Frente</button><button type="button" aria-pressed="false">Dorso</button>${hay360 ? '<button type="button" aria-pressed="false">360°</button>' : ''}</div>`);
     const segBtns = seg.querySelectorAll('button');
-    const hint = el(`<p class="muted">Deslizá con el dedo para girar el envase</p>`);
+    const hint = el(`<p class="muted">Deslizá para ver frente y dorso</p>`);
 
     const caraDe = a => (Math.round(a / 180) % 2 + 2) % 2;   // 0 frente, 1 dorso
     function pintar() { card.style.transform = `rotateY(${angulo}deg)`; const c = caraDe(angulo); dots.forEach((d, k) => d.classList.toggle('on', k === c)); segBtns.forEach((b, k) => b.setAttribute('aria-pressed', String(k === (vista === 2 ? 2 : c)))); }
@@ -266,26 +333,90 @@ const PANTALLAS = {
       if (!es360 && caraDe(angulo) !== i) angulo += 180;
       if (!es360) angulo = Math.round(angulo / 180) * 180;
       pintar();
-      hint.textContent = es360 ? 'Arrastrá para girar el envase' : 'Deslizá con el dedo para girar el envase';
+      hint.textContent = es360 ? 'Arrastrá para girar el envase' : 'Deslizá para ver frente y dorso';
     }
     segBtns.forEach((b, k) => b.onclick = () => mostrar(k));
 
     let x0 = null, dx = 0, frame0 = 0, angulo0 = 0;
-    viewer.addEventListener('pointerdown', e => { x0 = e.clientX; dx = 0; frame0 = frame; angulo0 = angulo; viewer.setPointerCapture(e.pointerId); card.classList.add('drag'); });
+    viewer.addEventListener('pointerdown', e => { if (e.isPrimary === false || (e.pointerType === 'mouse' && e.button !== 0)) return; x0 = e.clientX; dx = 0; frame0 = frame; angulo0 = angulo; viewer.setPointerCapture(e.pointerId); card.classList.add('drag'); });
     viewer.addEventListener('pointermove', e => {
       if (x0 === null) return; dx = e.clientX - x0;
       if (vista === 2) { const n = p.giro360.length, paso = Math.max(4, viewer.clientWidth / n); frame = ((frame0 + Math.round(-dx / paso)) % n + n) % n; giro.querySelector('img').src = p.giro360[frame]; }
       else { angulo = angulo0 + dx * 0.6; pintar(); }   // 0,6° por píxel: media vuelta en ~300 px
     });
-    const soltar = () => { if (x0 === null) return; card.classList.remove('drag'); if (vista !== 2) { angulo = Math.round(angulo / 180) * 180; pintar(); } x0 = null; };
+    const soltar = e => { if (x0 === null) return; card.classList.remove('drag'); if (vista !== 2) { angulo = angulo0 + (e.type !== 'pointercancel' && Math.abs(dx) >= 45 ? Math.sign(dx) * 180 : 0); pintar(); } x0 = null; };
     viewer.addEventListener('pointerup', soltar); viewer.addEventListener('pointercancel', soltar);
 
-    const next = el(`<button class="btn btn-red" type="button">¡Listo, al desafío!</button>`);
+    const next = el(`<button class="btn btn-red" type="button">Descubrir para qué sirve</button>`);
+    next.onclick = () => ir('aprender');
+    const back = el('<button class="video-btn" type="button">Volver al modelo 3D</button>'); back.onclick=()=>ir('producto');
+    s.append(viewer, seg, hint, back, el('<div class="spacer"></div>'), next);
+  },
+
+  aprender(s) {
+    s.append(el('<h2>Espuma para limpiar <em>serpentinas.</em></h2>'),
+      el(`<div class="explicacion"><div class="foto"><img src="${producto.fotos.frente.src}" alt="${esc(producto.nombre)}"></div><div class="foto"><img src="serpentina-web.jpg" alt="Serpentina de intercambio térmico"><span class="chip">Ilustración</span></div></div>`),
+      el('<p>Un limpiador para el mantenimiento de equipos HVAC-R.</p>'),
+      el('<p class="muted">Uso industrial. Consultá las instrucciones y precauciones del envase antes de aplicarlo.</p>'));
+    const jugar = el('<button class="btn btn-red" type="button">Probar el desafío</button>'); jugar.onclick=()=>ir('desafio');
+    const demo = el('<button class="btn btn-ghost" type="button">Ver animación conceptual</button>'); demo.onclick=()=>ir('uso');
+    s.append(jugar,demo);
+  },
+
+  uso(s) {
+    s.append(el('<h2>Explorá la <em>animación conceptual.</em></h2>'));
+    const picker=el('<div class="scene-pick" role="group" aria-label="Elegir video"><button type="button" data-scene="interior" aria-pressed="true">Serpentina interior</button><button type="button" data-scene="condensador" aria-pressed="false">Condensador</button><button type="button" data-scene="radiador" aria-pressed="false">Radiador</button></div>');
+    const video=el('<video class="demo-video" controls playsinline preload="metadata" poster="videos/interior-preview.jpg" src="videos/refrioil-interior.mp4" aria-label="Video ilustrativo: espuma sobre una serpentina interior"></video>');
+    const message=el('<p class="muted" role="status">Tocá ▶ para ver el clip.</p>');
+    const download=el('<a class="download-video" href="videos/refrioil-interior.mp4" download="refrioil-interior.mp4">Descargar este video · MP4</a>');
+    const interactive=el('<button class="video-btn" type="button">Explorar la simulación 3D</button>');interactive.onclick=()=>ir('simulacion');
+    const next=el('<button class="btn btn-red" type="button">Probar el desafío</button>');next.onclick=()=>ir('desafio');
+    picker.querySelectorAll('button').forEach(b=>b.onclick=()=>{
+      video.pause();const kind=b.dataset.scene;
+      video.src=`videos/refrioil-${kind}.mp4`;video.poster=`videos/${kind}-preview.jpg`;video.setAttribute('aria-label',`Video ilustrativo: ${b.textContent}`);video.load();
+      picker.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));
+      download.href=video.src;download.download=`refrioil-${kind}.mp4`;message.textContent='Tocá ▶ para ver el clip.';
+    });
+    video.addEventListener('error',()=>{message.textContent='No se pudo reproducir acá. Probá descargar el MP4 para abrirlo en tu reproductor.';});
+    s.append(picker,video,message,download,el('<p class="muted">Animación conceptual, no prueba del producto. Consultá las instrucciones y precauciones del envase.</p>'),interactive,next);
+    limpiarEscena=()=>{video.pause();video.removeAttribute('src');video.load();};
+  },
+
+  simulacion(s) {
+    s.append(el('<h2>Mirá la espuma <em>en acción</em></h2>'));
+    const picker=el('<div class="scene-pick" role="group" aria-label="Escenario ilustrativo"><button type="button" data-scene="interior" aria-pressed="true">Serpentina interior</button><button type="button" data-scene="condensador" aria-pressed="false">Condensador</button><button type="button" data-scene="radiador" aria-pressed="false">Radiador</button></div>');
+    const host=el('<div class="stage3d sim" role="img" aria-label="Simulación 3D de espuma sobre una superficie de intercambio térmico"></div>');
+    const status=el('<p class="scene-status" role="status">Elegí un escenario y reproducí</p>');
+    const range=el('<input class="scrub" type="range" min="0" max="100" value="0" step="1" aria-label="Avance de la animación, no representa un tiempo de aplicación">');
+    const actions=el('<div class="demo-actions"><button type="button" class="btn btn-red">Reproducir</button><button type="button" class="btn btn-ghost">Reiniciar</button></div>');
+    const exportar=el('<button type="button" class="video-btn">Guardar un clip para el stand</button>');
+    const download=el('<a class="download-video" hidden></a>');
+    s.append(picker,host,status,range,actions,el('<p class="muted">Simulación ilustrativa. No es una prueba del producto.</p>'),exportar,download,
+      el('<details class="precauciones"><summary>Antes de usar el producto</summary><p>Uso industrial. Consultá instrucciones, precauciones y compatibilidades en la etiqueta y ficha técnica. Esta animación no indica dosis, tiempos de acción, pasos de aplicación ni resultados garantizados.</p></details>'));
+    const next = el('<button class="btn btn-red" type="button">Probar el desafío</button>');
     next.onclick = () => ir('desafio');
-    s.append(viewer, seg, hint, el('<div class="spacer"></div>'), next);
+    s.append(el('<div class="spacer"></div>'), next);
+    const buttons=actions.querySelectorAll('button');let videoURL=null;
+    host.addEventListener('sceneerror',e=>error3d(host,e.detail));
+    try {
+      if(!window.Refrioil3D)throw new Error('No se cargó la animación. Podés continuar con el desafío.');
+      const sim=window.Refrioil3D.simulation(host,({progress,playing,recording,reduced})=>{
+        range.value=String(Math.round(progress*100));range.disabled=recording;
+        const label=recording?'Preparando el clip…':progress<=0?'Superficie de referencia':progress<1?'La espuma recubre la superficie':'Cobertura de espuma · vista ilustrativa';
+        if(status.textContent!==label)status.textContent=label;
+        buttons[0].textContent=reduced?'Cambiar vista':playing?'Pausar':progress>=1?'Repetir':'Reproducir';
+        buttons.forEach(b=>b.disabled=recording);picker.querySelectorAll('button').forEach(b=>b.disabled=recording);exportar.disabled=recording;
+        exportar.textContent=recording?'Grabando… mantené esta pestaña visible':'Guardar un clip para el stand';
+      });
+      picker.querySelectorAll('button').forEach(b=>b.onclick=()=>{sim.select(b.dataset.scene);picker.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));download.hidden=true;});
+      range.oninput=()=>sim.setProgress(Number(range.value)/100);buttons[0].onclick=()=>sim.toggle();buttons[1].onclick=()=>sim.reset();
+      exportar.onclick=()=>{try{download.hidden=true;sim.record(({blob,extension,kind})=>{if(videoURL)URL.revokeObjectURL(videoURL);videoURL=URL.createObjectURL(blob);download.href=videoURL;download.download=`refrioil-${kind}-demo.${extension}`;download.textContent=`Descargar video ${extension.toUpperCase()}`;download.hidden=false;});}catch(e){status.textContent=e.message;}};
+      limpiarEscena=()=>{sim.dispose();if(videoURL)URL.revokeObjectURL(videoURL);};
+    } catch(e) {error3d(host,e);picker.hidden=true;range.hidden=true;actions.hidden=true;exportar.hidden=true;status.textContent='La espuma está indicada para limpiar serpentinas. Consultá las instrucciones del envase.';}
   },
 
   desafio(s) {
+    desafioCompletado = false;
     const p = producto, d = p.desafio;
     let intentos = 0, resuelto = false;
     s.append(
@@ -298,10 +429,10 @@ const PANTALLAS = {
       b.onclick = () => {
         if (resuelto) return;
         if (o.correcta) {
-          resuelto = true; b.classList.add('ok'); b.querySelector('.mark').textContent = '✓';
+          resuelto = true; desafioCompletado = true; b.classList.add('ok'); b.querySelector('.mark').textContent = '✓';
           lista.querySelectorAll('.opcion').forEach(x => { x.disabled = true; x.classList.remove('bad'); });
           fb.innerHTML = ''; vibrar(60); confeti();
-          setTimeout(() => ir('final'), 900);
+          transicion = setTimeout(() => ir('final'), 900);
         } else {
           b.classList.remove('bad'); void b.offsetWidth; b.classList.add('bad'); b.querySelector('.mark').textContent = '✕';
           fb.innerHTML = ''; fb.append(el(`<div class="toast" role="status">${esc(d.incorrecto[intentos++ % d.incorrecto.length])}</div>`)); vibrar([30, 40, 30]);
@@ -317,8 +448,10 @@ const PANTALLAS = {
     s.append(
       el(`<div class="check"><svg viewBox="0 0 24 24"><path d="M4 12.5l5 5L20 6.5"/></svg></div>`),
       el(`<h2 class="center">${esc(d.correcto)}</h2>`),
+      el('<div class="participacion"><p>Ahora acercate al</p><strong>STAND 145A</strong><p>Mostrale esta pantalla al equipo para registrar tu participación en el sorteo presencial por obsequios.</p><p class="muted">Responder bien no garantiza un premio. Esta web no registra participantes ni realiza el sorteo. Consultá al equipo la dinámica y el horario.</p></div>'),
       el(`<div class="foto final-foto"><img src="${p.fotos.frente.src}" alt="${esc(p.fotos.frente.alt)}"></div>`),
-      el(`<div class="tags">${p.usos.map(u => `<span class="tag">${esc(u)}</span>`).join('')}</div>`)
+      el(`<div class="tags">${p.usos.map(u => `<span class="tag">${esc(u)}</span>`).join('')}</div>`),
+      el('<p class="muted">Uso industrial. Consultá las instrucciones y precauciones del envase.</p>')
     );
     const cont = el(`<div class="contacto"><h3>¿Querés saber más?</h3></div>`);
     const w = CONTACTO.whatsapp;
@@ -338,6 +471,7 @@ const PANTALLAS = {
 const cv = document.getElementById('confeti'), ctx = cv.getContext('2d');
 let piezas = [], raf = null, fin = 0;
 function confeti() {
+  if (reducirMovimiento() || !ctx) return;
   cv.hidden = false; cv.width = innerWidth; cv.height = innerHeight; fin = performance.now() + 2600;
   const colores = ['#e30613', '#ffffff', '#9a9aa1', '#ff4d5c'];
   piezas = Array.from({ length: 140 }, () => ({ x: Math.random() * cv.width, y: -20 - Math.random() * cv.height * .5, w: 6 + Math.random() * 8, h: 8 + Math.random() * 10, c: colores[Math.random() * colores.length | 0], vy: 2 + Math.random() * 3.5, vx: -1.5 + Math.random() * 3, r: Math.random() * Math.PI, vr: -.15 + Math.random() * .3 }));
@@ -348,7 +482,7 @@ function tick(t) {
   piezas.forEach(q => { q.x += q.vx; q.y += q.vy; q.r += q.vr; ctx.save(); ctx.translate(q.x, q.y); ctx.rotate(q.r); ctx.fillStyle = q.c; ctx.fillRect(-q.w / 2, -q.h / 2, q.w, q.h); ctx.restore(); });
   if (t < fin) raf = requestAnimationFrame(tick); else pararConfeti();
 }
-function pararConfeti() { cancelAnimationFrame(raf); ctx.clearRect(0, 0, cv.width, cv.height); cv.hidden = true; }
+function pararConfeti() { cancelAnimationFrame(raf); if (ctx) ctx.clearRect(0, 0, cv.width, cv.height); cv.hidden = true; }
 
 /* Arranque (?pantalla=producto lo usa experiencia.html) */
 const inicial = new URLSearchParams(location.search).get('pantalla');
